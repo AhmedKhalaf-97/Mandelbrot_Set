@@ -38,3 +38,4 @@
 
 *.dll
 /x64/Debug
+/.vs
