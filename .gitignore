@@ -35,3 +35,6 @@
 *.vcxproj
 *.sln
 /.vs/Mandelbrot_Set/v17
+
+*.dll
+/x64/Debug
