@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+*.user
+*.filters
+*.vcxproj
+*.sln
+/.vs/Mandelbrot_Set/v17
