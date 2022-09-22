@@ -26,8 +26,8 @@ int main()
 
     ComplexPlane complexPlane(aspectRatio);
 
-    VertexArray points(Points);
     int points_vertexCount = screenWidth * screenHeight;
+    VertexArray points(Points);
     points.resize(points_vertexCount);
 
     enum ProgramState
@@ -40,10 +40,65 @@ int main()
 
     while (window.isOpen())
     {
+        Event event;
+        while (window.pollEvent(event))
+        {
+            // This event is triggered when the user wants to close the window,
+            // through any of the possible methods the window manager provides (Alt + F4).
+            if (event.type == Event::Closed)
+            {
+                window.close();
+            }
+
+            if (event.type == Event::MouseButtonPressed)
+            {
+                Vector2i mousePosition = Vector2i(event.mouseButton.x, event.mouseButton.y);
+                Vector2f coord = window.mapPixelToCoords(mousePosition, complexPlane.getView());
+
+                if (event.mouseButton.button == Mouse::Right)
+                {
+                    complexPlane.zoomOut();
+                    complexPlane.setCenter(coord);
+                }
+
+                if (event.mouseButton.button == Mouse::Left)
+                {
+                    complexPlane.zoomIn();
+                    complexPlane.setCenter(coord);
+                }
+
+                currentProgramState = ProgramState::CALCULATING;
+            }
+
+            if (event.type == Event::MouseMoved)
+            {
+                Vector2i mousePosition = Vector2i(event.mouseMove.x, event.mouseMove.y);
+                Vector2f coord = window.mapPixelToCoords(mousePosition, complexPlane.getView());
+
+                complexPlane.setMouseLocation(coord);
+            }
+        }
+
         // Close the game window if the user pressed the Escape button.
         if (Keyboard::isKeyPressed(Keyboard::Escape))
         {
             window.close();
+        }
+
+        if (currentProgramState == ProgramState::CALCULATING)
+        {
+            for (int j = 0; j < screenWidth; j++)
+            {
+                for (int i = 0; i < screenHeight; i++)
+                {
+                    //cout << "(" << j << ", " << i << ")" << endl;
+                    points[j + i * screenWidth].position = {(float)j, (float)i};
+
+                    // Use mapPixelToCoords to find the Vector2f coordinate in
+                    // the ComplexPlane View that corresponds to the screen pixel
+                    // location at j,i
+                }
+            }
         }
 
         window.clear();
