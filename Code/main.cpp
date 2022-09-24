@@ -26,6 +26,11 @@ int main()
 
     ComplexPlane complexPlane(aspectRatio);
 
+    Font font;
+    font.loadFromFile("Fonts/sf-atarian-system.regular.ttf");
+
+    Text text;
+
     int points_vertexCount = screenWidth * screenHeight;
     VertexArray points(Points);
     points.resize(points_vertexCount);
@@ -94,15 +99,26 @@ int main()
                     //cout << "(" << j << ", " << i << ")" << endl;
                     points[j + i * screenWidth].position = {(float)j, (float)i};
 
-                    // Use mapPixelToCoords to find the Vector2f coordinate in
-                    // the ComplexPlane View that corresponds to the screen pixel
-                    // location at j,i
+                    Vector2f coord = window.mapPixelToCoords(Vector2i(j, i), complexPlane.getView());
+
+                    int iterationsCount = complexPlane.countIterations(coord);
+
+                    Uint8 r, g, b;
+
+                    complexPlane.iterationsToRGB(iterationsCount, r, g, b);
+
+                    points[j + i * screenWidth].color = {r, g, b};
+
+                    currentProgramState = ProgramState::DISPLAYING;
+
+                    complexPlane.loadText(text);
                 }
             }
         }
 
         window.clear();
-        //window.draw();
+        window.draw(points);
+        window.draw(text);
         window.display();
     }
 
