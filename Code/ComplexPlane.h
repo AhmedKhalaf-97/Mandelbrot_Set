@@ -4,7 +4,10 @@
 #include <SFML/Graphics/View.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <sstream>
+
 using namespace sf;
+using namespace std;
 
 const unsigned int MAX_ITER = 64;
 const float BASE_WIDTH = 4.0;
@@ -17,7 +20,7 @@ private:
 	Vector2f m_mouseLocation;
 	View m_view;
 	int m_zoomCount;
-	float m_aspectRation;
+	float m_aspectRatio;
 
 public:
 	ComplexPlane(float aspectRatio);

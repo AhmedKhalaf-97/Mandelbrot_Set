@@ -30,6 +30,7 @@ int main()
     font.loadFromFile("Fonts/sf-atarian-system.regular.ttf");
 
     Text text;
+    text.setFont(font);
 
     int points_vertexCount = screenWidth * screenHeight;
     VertexArray points(Points);
