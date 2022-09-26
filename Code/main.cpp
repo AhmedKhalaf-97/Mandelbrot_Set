@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "ComplexPlane.h"
+#include <thread>
 
 using namespace std;
 using namespace sf;
@@ -8,18 +9,16 @@ using namespace sf;
 
 int main()
 {
-    //int screenWidth = VideoMode::getDesktopMode().width;
-    //int screenHeight = VideoMode::getDesktopMode().height;
+    int screenWidth = VideoMode::getDesktopMode().width;
+    int screenHeight = VideoMode::getDesktopMode().height;
 
-    int screenWidth = 800;
-    int screenHeight = 600;
 
     float aspectRatio = screenHeight / (float)screenWidth;
 
     int screenRes_X = screenWidth;
     int screenRes_Y = screenHeight;
 
-	RenderWindow window(VideoMode(screenRes_X, screenRes_Y), "Mandelbrot Set", Style::Default);
+	RenderWindow window(VideoMode(screenRes_X, screenRes_Y), "Mandelbrot Set", Style::Fullscreen);
 
     // Change the displayed cursor.
     Cursor cursor;
@@ -97,22 +96,34 @@ int main()
 
         if (currentProgramState == ProgramState::CALCULATING)
         {
-            for (int j = 0; j < screenWidth; j++)
+            auto CalcPoints = [&](int i_start, int i_size)
             {
-                for (int i = 0; i < screenHeight; i++)
+                for (int j = 0; j < screenWidth; j++)
                 {
-                    points[j + i * screenWidth].position = {(float)j, (float)i};
+                    for (int i = i_start; i < i_size; i++)
+                    {
+                        points[j + i * screenWidth].position = { (float)j, (float)i };
 
-                    Vector2f coord = window.mapPixelToCoords(Vector2i(j, i), complexPlane.getView());
+                        Vector2f coord = window.mapPixelToCoords(Vector2i(j, i), complexPlane.getView());
 
-                    int iterationsCount = complexPlane.countIterations(coord);
+                        int iterationsCount = complexPlane.countIterations(coord);
 
-                    Uint8 r, g, b;
+                        Uint8 r, g, b;
 
-                    complexPlane.iterationsToRGB(iterationsCount, r, g, b);
+                        complexPlane.iterationsToRGB(iterationsCount, r, g, b);
 
-                    points[j + i * screenWidth].color = {r, g, b};
+                        points[j + i * screenWidth].color = { r, g, b };
+                    }
                 }
+            };
+
+            double threadsCount = screenHeight;
+
+            double numberOfScreenChunks = screenHeight / threadsCount;
+
+            for (int i = 0; i < threadsCount; i++)
+            {
+                thread(CalcPoints, i * numberOfScreenChunks, (i + 1) * numberOfScreenChunks).detach();
             }
 
             currentProgramState = ProgramState::DISPLAYING;
