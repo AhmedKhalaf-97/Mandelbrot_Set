@@ -8,12 +8,16 @@ using namespace sf;
 
 int main()
 {
-    int screenWidth = VideoMode::getDesktopMode().width;
-    int screenHeight = VideoMode::getDesktopMode().height;
+    //int screenWidth = VideoMode::getDesktopMode().width;
+    //int screenHeight = VideoMode::getDesktopMode().height;
+
+    int screenWidth = 800;
+    int screenHeight = 600;
+
     float aspectRatio = screenHeight / (float)screenWidth;
 
-    int screenRes_X = 1920;
-    int screenRes_Y = 1080;
+    int screenRes_X = screenWidth;
+    int screenRes_Y = screenHeight;
 
 	RenderWindow window(VideoMode(screenRes_X, screenRes_Y), "Mandelbrot Set", Style::Default);
 
@@ -97,7 +101,6 @@ int main()
             {
                 for (int i = 0; i < screenHeight; i++)
                 {
-                    //cout << "(" << j << ", " << i << ")" << endl;
                     points[j + i * screenWidth].position = {(float)j, (float)i};
 
                     Vector2f coord = window.mapPixelToCoords(Vector2i(j, i), complexPlane.getView());
@@ -109,13 +112,13 @@ int main()
                     complexPlane.iterationsToRGB(iterationsCount, r, g, b);
 
                     points[j + i * screenWidth].color = {r, g, b};
-
-                    currentProgramState = ProgramState::DISPLAYING;
-
-                    complexPlane.loadText(text);
                 }
             }
+
+            currentProgramState = ProgramState::DISPLAYING;
         }
+
+        complexPlane.loadText(text);
 
         window.clear();
         window.draw(points);

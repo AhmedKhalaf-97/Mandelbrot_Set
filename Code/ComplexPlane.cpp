@@ -12,7 +12,7 @@ void ComplexPlane::zoomIn()
 {
 	m_zoomCount++;
 	int x = BASE_WIDTH * pow(BASE_ZOOM, m_zoomCount);
-	int y = BASE_HEIGHT * m_aspectRatio * pow(BASE_ZOOM, m_zoomCount);
+	int y = -BASE_HEIGHT * m_aspectRatio * pow(BASE_ZOOM, m_zoomCount);
 	m_view.setSize(x, y);
 }
 
@@ -20,7 +20,7 @@ void ComplexPlane::zoomOut()
 {
 	m_zoomCount--;
 	int x = BASE_WIDTH * pow(BASE_ZOOM, m_zoomCount);
-	int y = BASE_HEIGHT * m_aspectRatio * pow(BASE_ZOOM, m_zoomCount);
+	int y = -BASE_HEIGHT * m_aspectRatio * pow(BASE_ZOOM, m_zoomCount);
 	m_view.setSize(x, y);
 }
 
@@ -53,14 +53,58 @@ void ComplexPlane::loadText(Text& text)
 
 size_t ComplexPlane::countIterations(Vector2f coord)
 {
-	// to do later on.
-	return size_t();
+	double re = coord.x;
+	double im = coord.y;
+
+	complex<double> c(re, im);
+	complex<double> z(0, 0);
+
+	int iterations = 0;
+	while (iterations < MAX_ITER && abs(z) < 2.0)
+	{
+		z = z * z + c;
+		iterations++;
+	}
+
+	return iterations;
 }
 
 void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 {
-	r = 0;
-	g = 0;
-	b = 0;
-	// to do later on.
+	if (count >= MAX_ITER)
+	{
+		r = 0;
+		g = 0;
+		b = 0;
+	}
+	else if (count >= (MAX_ITER / 2.0))
+	{
+		r = 51;
+		g = 51;
+		b = 51;
+	}
+	else if (count >= (MAX_ITER / 3.0))
+	{
+		r = 115;
+		g = 115;
+		b = 115;
+	}
+	else if (count >= (MAX_ITER / 4.0))
+	{
+		r = 179;
+		g = 179;
+		b = 179;
+	}
+	else if (count >= (MAX_ITER / 5.0))
+	{
+		r = 204;
+		g = 204;
+		b = 204;
+	}
+	else
+	{
+		r = 217;
+		g = 217;
+		b = 217;
+	}
 }

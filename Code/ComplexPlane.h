@@ -5,6 +5,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <sstream>
+#include <complex>      // std::complex, std::abs
 
 using namespace sf;
 using namespace std;
