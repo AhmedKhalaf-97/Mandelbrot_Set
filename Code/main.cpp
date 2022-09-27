@@ -9,9 +9,11 @@ using namespace sf;
 
 int main()
 {
-    int screenWidth = VideoMode::getDesktopMode().width;
-    int screenHeight = VideoMode::getDesktopMode().height;
+    //int screenWidth = VideoMode::getDesktopMode().width;
+    //int screenHeight = VideoMode::getDesktopMode().height;
 
+    int screenWidth = 800;
+    int screenHeight = 600;
 
     float aspectRatio = screenHeight / (float)screenWidth;
 
@@ -96,34 +98,32 @@ int main()
 
         if (currentProgramState == ProgramState::CALCULATING)
         {
-            auto CalcPoints = [&](int i_start, int i_size)
+
+            for (int j = 0; j < screenWidth; j++)
             {
-                for (int j = 0; j < screenWidth; j++)
+                for (int i = 0; i < screenHeight; i++)
                 {
-                    for (int i = i_start; i < i_size; i++)
-                    {
-                        points[j + i * screenWidth].position = { (float)j, (float)i };
 
-                        Vector2f coord = window.mapPixelToCoords(Vector2i(j, i), complexPlane.getView());
+                    Thread thread([&]()
+                        {
+                            points[j + i * screenWidth].position = { (float)j, (float)i };
 
-                        int iterationsCount = complexPlane.countIterations(coord);
+                            Vector2f coord = window.mapPixelToCoords(Vector2i(j, i), complexPlane.getView());
 
-                        Uint8 r, g, b;
 
-                        complexPlane.iterationsToRGB(iterationsCount, r, g, b);
+                            int iterationsCount;
+                            iterationsCount = complexPlane.countIterations(coord);
 
-                        points[j + i * screenWidth].color = { r, g, b };
-                    }
+                            Uint8 r, g, b;
+
+                            complexPlane.iterationsToRGB(iterationsCount, r, g, b);
+
+                            points[j + i * screenWidth].color = { r, g, b };
+                        });
+
+                    thread.launch();
+
                 }
-            };
-
-            double threadsCount = screenHeight;
-
-            double numberOfScreenChunks = screenHeight / threadsCount;
-
-            for (int i = 0; i < threadsCount; i++)
-            {
-                thread(CalcPoints, i * numberOfScreenChunks, (i + 1) * numberOfScreenChunks).detach();
             }
 
             currentProgramState = ProgramState::DISPLAYING;
