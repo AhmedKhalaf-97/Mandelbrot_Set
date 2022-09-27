@@ -71,40 +71,69 @@ size_t ComplexPlane::countIterations(Vector2f coord)
 
 void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 {
+	Color color0(0, 0, 0);
+	Color color1(254, 39, 18);
+	Color color2(247, 247, 212);
+	Color color3(254, 254, 51);
+	Color color4(134, 1, 175);
+	Color color5(2, 71, 254);
+	Color color6(68, 36, 214);
+	Color color7(146, 20, 184);
+	Color color8(42, 9, 52);
+
+
 	if (count >= MAX_ITER)
 	{
-		r = 0;
-		g = 0;
-		b = 0;
+		r = color0.r;
+		g = color0.g;
+		b = color0.b;
 	}
 	else if (count >= (MAX_ITER / 2.0))
 	{
-		r = 51;
-		g = 51;
-		b = 51;
-	}
-	else if (count >= (MAX_ITER / 3.0))
-	{
-		r = 115;
-		g = 115;
-		b = 115;
+		r = color1.r;
+		g = color1.g;
+		b = color1.b;
 	}
 	else if (count >= (MAX_ITER / 4.0))
 	{
-		r = 179;
-		g = 179;
-		b = 179;
+		r = color2.r;
+		g = color2.g;
+		b = color2.b;
 	}
 	else if (count >= (MAX_ITER / 5.0))
 	{
-		r = 204;
-		g = 204;
-		b = 204;
+		r = color3.r;
+		g = color3.g;
+		b = color3.b;
+	}
+	else if (count >= (MAX_ITER / 8.0))
+	{
+		r = color4.r;
+		g = color4.g;
+		b = color4.b;
+	}
+	else if (count >= (MAX_ITER / 10.0))
+	{
+		r = color5.r;
+		g = color5.g;
+		b = color5.b;
+	}
+	else if (count >= (MAX_ITER / 15.0))
+	{
+		r = color6.r;
+		g = color6.g;
+		b = color6.b;
+	}
+	else if (count >= (MAX_ITER / 24.0))
+	{
+		r = color7.r;
+		g = color7.g;
+		b = color7.b;
 	}
 	else
 	{
-		r = 217;
-		g = 217;
-		b = 217;
+		r = color8.r;
+		g = color8.g;
+		b = color8.b;
 	}
 }
