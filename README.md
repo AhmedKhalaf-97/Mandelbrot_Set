@@ -11,3 +11,4 @@ This is a CISP-400 class project. It's one of the coolest projects that I have w
 ![Mandelbrot_Set_05](https://user-images.githubusercontent.com/96251220/192573594-1e17ce34-38d2-49c2-9c8f-29147b55349e.png)
 ![Mandelbrot_Set_06](https://user-images.githubusercontent.com/96251220/192573596-2dc32a99-ce64-4a92-9860-9b0374ae5d17.png)
 ![Mandelbrot_Set_07](https://user-images.githubusercontent.com/96251220/192573598-58b442bf-83fe-4511-a939-7b440e6940f1.png)
+![Mandelbrot_Set_08](https://user-images.githubusercontent.com/96251220/192683014-5991a464-316c-457e-aec6-1b0bc8269689.png)
