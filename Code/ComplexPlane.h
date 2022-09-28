@@ -22,6 +22,7 @@ private:
 	View m_view;
 	int m_zoomCount;
 	float m_aspectRatio;
+	int totalMaxIterations;
 
 public:
 	ComplexPlane(float aspectRatio);
@@ -31,8 +32,9 @@ public:
 	View getView();
 	void setMouseLocation(Vector2f coord);
 	void loadText(Text& text);
-	static size_t countIterations(Vector2f coord);
-	static void iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b);
+	void setTotalMaxIterations(int additionalMaxIterations);
+	static size_t countIterations(Vector2f coord, int additionalMaxIterations);
+	static void iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b, int additionalMaxIterations);
 };
 
 #endif // !COMPLEXPLANE

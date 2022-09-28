@@ -12,7 +12,6 @@ int main()
     int screenWidth = VideoMode::getDesktopMode().width;
     int screenHeight = VideoMode::getDesktopMode().height;
 
-
     float aspectRatio = screenHeight / (float)screenWidth;
 
     int screenRes_X = screenWidth;
@@ -34,6 +33,8 @@ int main()
 
     Text text;
     text.setFont(font);
+
+    int additionalMaxIterations = 0;
 
     int points_vertexCount = screenWidth * screenHeight;
     VertexArray points(Points);
@@ -79,6 +80,29 @@ int main()
                 currentProgramState = ProgramState::CALCULATING;
             }
 
+            if (event.type == Event::KeyPressed)
+            {
+                if (event.key.code == Keyboard::Up)
+                {
+                    additionalMaxIterations += 32;
+                    complexPlane.setTotalMaxIterations(additionalMaxIterations);
+                }
+
+                if (event.key.code == Keyboard::Down)
+                {
+                    if (additionalMaxIterations >= 32)
+                    {
+                        additionalMaxIterations -= 32;
+                        complexPlane.setTotalMaxIterations(additionalMaxIterations);
+                    }
+                }
+
+                if (event.key.code == Keyboard::R)
+                {
+                    currentProgramState = ProgramState::CALCULATING;
+                }
+            }
+
             if (event.type == Event::MouseMoved)
             {
                 Vector2i mousePosition = Vector2i(event.mouseMove.x, event.mouseMove.y);
@@ -106,11 +130,11 @@ int main()
 
                         Vector2f coord = window.mapPixelToCoords(Vector2i(j, i), complexPlane.getView());
 
-                        int iterationsCount = complexPlane.countIterations(coord);
+                        int iterationsCount = complexPlane.countIterations(coord, additionalMaxIterations);
 
                         Uint8 r, g, b;
 
-                        complexPlane.iterationsToRGB(iterationsCount, r, g, b);
+                        complexPlane.iterationsToRGB(iterationsCount, r, g, b, additionalMaxIterations);
 
                         points[j + i * screenWidth].color = { r, g, b };
                     }
